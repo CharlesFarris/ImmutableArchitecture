@@ -7,7 +7,7 @@ namespace Sandbox.Shared
     public sealed class Name : ValueObject
     {
         //--------------------------------------------------
-        public Name([NotNull] string value)
+        public Name([CanBeNull] string value)
         {
             var validValue = (value ?? string.Empty).Trim();
             this.Value = string.IsNullOrEmpty(validValue)

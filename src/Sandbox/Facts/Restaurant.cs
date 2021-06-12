@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using Sandbox.Shared;
 
 namespace Sandbox.Facts
 {
-    public sealed class Restaurant : ValueObject
+    public sealed class Restaurant : Fact
     {
         //--------------------------------------------------
-        public Restaurant([NotNull] Name name)
+        public Restaurant(int id, [NotNull] Name name)
+            : base(id)
         {
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
         }
@@ -24,6 +26,24 @@ namespace Sandbox.Facts
         public override string ToString()
         {
             return $"Restaurant:{this.Name.Value}";
+        }
+
+        //--------------------------------------------------
+        public static Model Create([NotNull] Model model, [CanBeNull] string name)
+        {
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            var validName = new Name(name);
+            var existing = model.Facts.OfType<Restaurant>().FirstOrDefault(r => r.Name.Equals(validName));
+            if (existing is not null)
+            {
+                return model;
+            }
+
+            var restaurant = new Restaurant(model.NextId(), validName);
+            return model.InsertFact(restaurant);
         }
     }
 }

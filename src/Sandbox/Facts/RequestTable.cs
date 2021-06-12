@@ -5,16 +5,19 @@ using Sandbox.Shared;
 
 namespace Sandbox.Facts
 {
-    public sealed class RequestTable : ValueObject
+    public sealed class RequestTable : Fact
     {
         //--------------------------------------------------
-        public RequestTable([NotNull] Restaurant restaurant, [NotNull] Name name, int partySize)
+        public RequestTable(int fact, [NotNull] Restaurant restaurant, [NotNull] Name name, int partySize,
+            DateTime when)
+            : base(fact)
         {
             this.Restaurant = restaurant ?? throw new ArgumentNullException(nameof(restaurant));
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
             this.PartySize = partySize > 0
                 ? partySize
                 : throw new ArgumentOutOfRangeException(nameof(partySize));
+            this.When = when;
         }
 
         [NotNull] public Restaurant Restaurant { get; }
@@ -23,10 +26,12 @@ namespace Sandbox.Facts
 
         public int PartySize { get; }
 
+        public DateTime When { get; }
+
         //--------------------------------------------------
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            return new object[] {this.Restaurant, this.Name, this.PartySize};
+            return new object[] {this.Restaurant, this.Name, this.PartySize, this.When};
         }
     }
 }

@@ -14,15 +14,15 @@ namespace Sandbox.Test
         [Test]
         public static void Ctor_ValidatesBehavior()
         {
-            var restaurant = new Restaurant(new Name(value: "name"));
-            var table = new Table(restaurant, number: 0, capacity: 3);
-            var server = new Server(new Name(value: "name"));
+            var restaurant = new Restaurant(id: 1, new Name(value: "name"));
+            var table = new Table(id: 2, restaurant, number: 0, capacity: 3);
+            var server = new Server(id: 3, new Name(value: "name"));
 
             // use case: invalid server
             {
                 var ex = Assert.Throws<ArgumentNullException>(() =>
                 {
-                    var _ = new Assignment(server: null!, table);
+                    var _ = new Assignment(id: 4, server: null!, table);
                 });
                 Assert.That(ex.ParamName, Is.EqualTo("server"));
             }
@@ -31,14 +31,15 @@ namespace Sandbox.Test
             {
                 var ex = Assert.Throws<ArgumentNullException>(() =>
                 {
-                    var _ = new Assignment(server, table: null!);
+                    var _ = new Assignment(id: 4, server, table: null!);
                 });
                 Assert.That(ex.ParamName, Is.EqualTo("table"));
             }
             
             // use case: valid construction
             {
-                var assignment = new Assignment(server, table);
+                var assignment = new Assignment(id: 4, server, table);
+                Assert.That(assignment.Id, Is.EqualTo(4));
                 Assert.That(assignment.Server, Is.EqualTo(server));
                 Assert.That(assignment.Table, Is.EqualTo(table));
             }

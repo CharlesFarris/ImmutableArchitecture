@@ -17,7 +17,7 @@ namespace Sandbox.Test
             {
                 var ex = Assert.Throws<ArgumentNullException>(() =>
                 {
-                    var _ = new Server(name: null);
+                    var _ = new Server(id: 1, name: null);
                 });
                 Assert.That(ex.ParamName, Is.EqualTo("name"));
             }
@@ -25,7 +25,8 @@ namespace Sandbox.Test
             // use case: valid construction
             {
                 var name = new Name(value: "name");
-                var server = new Server(name);
+                var server = new Server(id: 1, name);
+                Assert.That(server.Id, Is.EqualTo(1));
                 Assert.That(server.Name, Is.EqualTo(name));
             }
         }

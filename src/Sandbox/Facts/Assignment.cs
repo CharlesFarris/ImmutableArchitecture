@@ -5,17 +5,18 @@ using Sandbox.Shared;
 
 namespace Sandbox.Facts
 {
-    public sealed class Assignment : ValueObject
+    public sealed class Assignment : Fact
     {
         //--------------------------------------------------
-        public Assignment([NotNull] Server server, [NotNull] Table table)
+        public Assignment(int id, [NotNull] Server server, [NotNull] Table table)
+            : base(id)
         {
             this.Server = server ?? throw new ArgumentNullException(nameof(server));
             this.Table = table ?? throw new ArgumentNullException(nameof(table));
         }
-        
+
         [NotNull] public Server Server { get; }
-        
+
         [NotNull] public Table Table { get; }
 
         //--------------------------------------------------
