@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Sandbox.Shared;
 
@@ -9,7 +10,7 @@ namespace Sandbox.Facts
     {
         //--------------------------------------------------
         public Assignment(int id, [NotNull] Server server, [NotNull] Table table)
-            : base(id)
+            : base(id, ImmutableList<Fact>.Empty.Add(server).Add(table))
         {
             this.Server = server ?? throw new ArgumentNullException(nameof(server));
             this.Table = table ?? throw new ArgumentNullException(nameof(table));

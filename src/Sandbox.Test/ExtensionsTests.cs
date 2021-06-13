@@ -9,6 +9,7 @@ namespace Sandbox.Test
         [Test]
         public static void GenerateGraphviz_ValidatesBehavior()
         {
+            var timeProvider = DefaultTimeProvider.Instance;
             var model = Model.Empty;
             {
                 var (updatedModel, restaurant) = Restaurant.Create(model, "Pizza Hut");
@@ -28,9 +29,21 @@ namespace Sandbox.Test
                     .CreateTable(restaurant, 4, 8)
                     .CreateTable(restaurant, 5, 2)
                     .CreateTable(restaurant, 6, 2)
-                    .CreateRequestTable(restaurant, "Smith", 3, DefaultTimeProvider.Instance)
-                    .CreateRequestTable(restaurant, "Doe", 5, DefaultTimeProvider.Instance)
-                    .CreateRequestTable(restaurant, "Biggie", 15, DefaultTimeProvider.Instance);
+                    .CreateRequestTable(restaurant, "Smith", 3, timeProvider)
+                    .CreateRequestTable(restaurant, "Doe", 5, timeProvider)
+                    .CreateRequestTable(restaurant, "Biggie", 15, timeProvider)
+                    .TrySeatParties(restaurant, timeProvider)
+                    .TrySeatParties(restaurant, timeProvider)
+                    .TrySeatParties(restaurant, timeProvider)
+                    .TryBusTable(restaurant, timeProvider)
+                    .TryBusTable(restaurant, timeProvider)
+                    .TryBusTable(restaurant, timeProvider)
+                    .CreateRequestTable(restaurant, "Jones", 5, timeProvider)
+                    .TrySeatParties(restaurant, timeProvider)
+                    .TryBusTable(restaurant, timeProvider)
+                    .CreateRequestTable(restaurant, "Holmes", 5, timeProvider)
+                    .TrySeatParties(restaurant, timeProvider)
+                    .CreateRequestTable(restaurant, "Ames", 1, timeProvider);
             }
 
             var graphviz = model.ToGraphviz();

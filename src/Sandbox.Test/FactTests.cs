@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using NUnit.Framework;
 using Sandbox.Shared;
 
@@ -21,7 +22,7 @@ namespace Sandbox.Test
         {
             //--------------------------------------------------
             public MockFact(int id)
-                : base(id)
+                : base(id, ImmutableList<Fact>.Empty)
             {
             }
 

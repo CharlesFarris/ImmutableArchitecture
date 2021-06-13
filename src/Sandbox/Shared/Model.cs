@@ -37,6 +37,5 @@ namespace Sandbox.Shared
 
             return new Model(model.Facts.Add(fact));
         }
-
     }
 }

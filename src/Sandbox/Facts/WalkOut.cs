@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using JetBrains.Annotations;
 using Sandbox.Shared;
@@ -9,7 +10,7 @@ namespace Sandbox.Facts
     {
         //--------------------------------------------------
         public WalkOut(int id, [NotNull] RequestTable requestTable)
-            : base(id)
+            : base(id, ImmutableList<Fact>.Empty.Add(requestTable))
         {
             this.RequestTable = requestTable;
         }

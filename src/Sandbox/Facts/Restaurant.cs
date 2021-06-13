@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using JetBrains.Annotations;
 using Sandbox.Shared;
@@ -10,7 +11,7 @@ namespace Sandbox.Facts
     {
         //--------------------------------------------------
         public Restaurant(int id, [NotNull] Name name)
-            : base(id)
+            : base(id, ImmutableList<Fact>.Empty)
         {
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using Sandbox.Shared;
 
@@ -9,7 +10,7 @@ namespace Sandbox.Facts
     {
         //--------------------------------------------------
         public Server(int id, [NotNull] Name name)
-            : base(id)
+            : base(id, ImmutableList<Fact>.Empty)
         {
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
         }

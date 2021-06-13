@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using JetBrains.Annotations;
 using Sandbox.Shared;
@@ -11,7 +12,7 @@ namespace Sandbox.Facts
         //--------------------------------------------------
         public RequestTable(int id, [NotNull] Restaurant restaurant, [NotNull] Name name, int partySize,
             DateTimeOffset when)
-            : base(id)
+            : base(id, ImmutableList<Fact>.Empty.Add(restaurant))
         {
             this.Restaurant = restaurant ?? throw new ArgumentNullException(nameof(restaurant));
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -60,7 +61,7 @@ namespace Sandbox.Facts
 
             var now = timeProvider.Now;
             var existing = model.Facts.OfType<RequestTable>().FirstOrDefault(rp =>
-                rp.Restaurant.Equals(restaurant)
+                rp.Restaurant.Id == restaurant.Id
                 && rp.Name.Equals(name)
                 && rp.PartySize.Equals(partySize)
                 && rp.When.Equals(now));
