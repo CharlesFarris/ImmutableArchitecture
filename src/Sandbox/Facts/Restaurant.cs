@@ -29,7 +29,7 @@ namespace Sandbox.Facts
         }
 
         //--------------------------------------------------
-        public static Model Create([NotNull] Model model, [CanBeNull] string name)
+        public static (Model, Restaurant) Create([NotNull] Model model, [CanBeNull] string name)
         {
             if (model is null)
             {
@@ -39,11 +39,11 @@ namespace Sandbox.Facts
             var existing = model.Facts.OfType<Restaurant>().FirstOrDefault(r => r.Name.Equals(validName));
             if (existing is not null)
             {
-                return model;
+                return (model, existing);
             }
 
             var restaurant = new Restaurant(model.NextId(), validName);
-            return model.InsertFact(restaurant);
+            return (model.InsertFact(restaurant), restaurant);
         }
     }
 }

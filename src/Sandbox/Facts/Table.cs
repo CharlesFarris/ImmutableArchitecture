@@ -36,7 +36,7 @@ namespace Sandbox.Facts
         }
 
         //--------------------------------------------------
-        public static Model Create([NotNull] Model model, [NotNull] Restaurant restaurant, int number, int capacity)
+        public static (Model, Table) Create([NotNull] Model model, [NotNull] Restaurant restaurant, int number, int capacity)
         {
             if (model is null)
             {
@@ -48,20 +48,19 @@ namespace Sandbox.Facts
                 throw new ArgumentNullException(nameof(restaurant));
             }
 
-            if (model.Facts.Contains(restaurant))
+            if (!model.Facts.Contains(restaurant))
             {
                 throw new InvalidOperationException();
             }
 
-            var existing = model.Facts.OfType<Table>().FirstOrDefault(t => t.Number == number);
+            var existing = model.Facts.OfType<Table>().FirstOrDefault(t => t.Number == number && Equals(t.Restaurant, restaurant));
             if (existing is not null)
             {
-                return model;
+                return (model, existing);
             }
 
             var table = new Table(model.Facts.Count + 1, restaurant, number, capacity);
-            return model.InsertFact(table);
-
+            return (model.InsertFact(table), table);
         }
     }
 }

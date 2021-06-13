@@ -10,13 +10,30 @@ namespace Sandbox.Test
         public static void GenerateGraphviz_ValidatesBehavior()
         {
             var model = Model.Empty;
-            var tuple1 = Restaurant.Create(model, "Pizza Hut");
-            var tuple11 = Table.Create(tuple1.Item2, tuple1.Item1, 1, 4);
-            var tuple12 = Table.Create(tuple11.Item2)
-            
-            var tuple2 = Restaurant.Create(tuple1.Item2, "Wendy's");
+            {
+                var (updatedModel, restaurant) = Restaurant.Create(model, "Pizza Hut");
+                model = updatedModel
+                    .CreateTable(restaurant, 1, 4)
+                    .CreateTable(restaurant, 2, 6)
+                    .CreateTable(restaurant, 3, 2)
+                    .CreateTable(restaurant, 4, 2);
+            }
 
-            var graphviz = tuple2.Item2.ToGraphviz();
+            {
+                var (updatedModel, restaurant) = Restaurant.Create(model, "Wendy's");
+                model = updatedModel
+                    .CreateTable(restaurant, 1, 4)
+                    .CreateTable(restaurant, 2, 4)
+                    .CreateTable(restaurant, 3, 6)
+                    .CreateTable(restaurant, 4, 8)
+                    .CreateTable(restaurant, 5, 2)
+                    .CreateTable(restaurant, 6, 2)
+                    .CreateRequestTable(restaurant, "Smith", 3, DefaultTimeProvider.Instance)
+                    .CreateRequestTable(restaurant, "Doe", 5, DefaultTimeProvider.Instance)
+                    .CreateRequestTable(restaurant, "Biggie", 15, DefaultTimeProvider.Instance);
+            }
+
+            var graphviz = model.ToGraphviz();
             TestContext.WriteLine(graphviz);
         }
     }
